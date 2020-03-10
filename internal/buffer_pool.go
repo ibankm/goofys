@@ -63,7 +63,7 @@ func maxMemToUse(buffersNow uint64) uint64 {
 
 	log.Debugf("amount of allocated memory: %v %v", ms.Sys/1024/1024, ms.Alloc/1024/1024)
 
-	max := uint64(availableMem+ms.Sys) / 2
+	max := uint64(availableMem+ms.Sys) / 4
 	maxbuffers := MaxUInt64(max/BUF_SIZE, 1)
 	log.Debugf("using up to %v %vMB buffers, now is %v", maxbuffers, BUF_SIZE/1024/1024, buffersNow)
 	return maxbuffers
