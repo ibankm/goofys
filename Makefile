@@ -1,4 +1,5 @@
 export CGO_ENABLED=0
+export GOPATH=${HOME}/goofys
 
 run-test: s3proxy.jar
 	./test/run-tests.sh
@@ -14,3 +15,6 @@ build:
 
 install:
 	go install -ldflags "-X main.Version=`git rev-parse HEAD`"
+
+linux:
+	GOOS=linux GOARCH=amd64 go build -ldflags "-X main.Version=`git rev-parse HEAD`"
