@@ -394,6 +394,7 @@ func (s *S3Backend) ListBlobs(param *ListBlobsInput) (*ListBlobsOutput, error) {
 		MaxKeys:           maxKeys,
 		StartAfter:        param.StartAfter,
 		ContinuationToken: param.ContinuationToken,
+		EncodingType:      aws.String(s3.EncodingTypeUrl),
 	})
 	if err != nil {
 		return nil, mapAwsError(err)
@@ -406,8 +407,9 @@ func (s *S3Backend) ListBlobs(param *ListBlobsInput) (*ListBlobsOutput, error) {
 		prefixes = append(prefixes, BlobPrefixOutput{Prefix: p.Prefix})
 	}
 	for _, i := range resp.Contents {
+		key, _ := url.QueryUnescape(*i.Key)
 		items = append(items, BlobItemOutput{
-			Key:          i.Key,
+			Key:          &key,
 			ETag:         i.ETag,
 			LastModified: i.LastModified,
 			Size:         uint64(*i.Size),
