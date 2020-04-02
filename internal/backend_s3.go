@@ -404,7 +404,8 @@ func (s *S3Backend) ListBlobs(param *ListBlobsInput) (*ListBlobsOutput, error) {
 	items := make([]BlobItemOutput, 0)
 
 	for _, p := range resp.CommonPrefixes {
-		prefixes = append(prefixes, BlobPrefixOutput{Prefix: p.Prefix})
+		prefix, _ := url.QueryUnescape(*p.Prefix)
+		prefixes = append(prefixes, BlobPrefixOutput{Prefix: &prefix})
 	}
 	for _, i := range resp.Contents {
 		key, _ := url.QueryUnescape(*i.Key)
